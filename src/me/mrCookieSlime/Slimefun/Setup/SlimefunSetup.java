@@ -1355,6 +1355,7 @@ public class SlimefunSetup {
 								e.getBlock().getWorld().playEffect(e.getBlock().getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
 								drops.set(j, new CustomItem(RecipeCalculator.getSmeltedOutput(drops.get(i).getType()), drops.get(i).getAmount()));
 							}
+							PlayerInventory.damageItemInHand(e.getPlayer());
 						}
 					}
 					
@@ -1462,13 +1463,15 @@ public class SlimefunSetup {
 						TreeCalculator.getTree(e.getBlock().getLocation(), e.getBlock().getLocation(), logs);
 						
 						if (logs.contains(e.getBlock())) logs.remove(e.getBlock());
-						for (Location b: logs) {
+						for (Location b : logs) {
 							if (CSCoreLib.getLib().getProtectionManager().canBuild(e.getPlayer().getUniqueId(), b.getBlock())) {
 								b.getWorld().playEffect(b, Effect.STEP_SOUND, b.getBlock().getType());
 								for (ItemStack drop: b.getBlock().getDrops()) {
 									b.getWorld().dropItemNaturally(b, drop);
 								}
 								b.getBlock().setType(Material.AIR);
+								PlayerInventory.damageItemInHand(e.getPlayer());
+								PlayerInventory.update(e.getPlayer());				
 							}
 						}
 					}
@@ -2502,6 +2505,7 @@ public class SlimefunSetup {
 							b.getWorld().dropItemNaturally(b.getLocation(), b.getType().toString().endsWith("_ORE") ? new CustomItem(drop, fortune): drop);
 						}
 						b.setType(Material.AIR);
+						PlayerInventory.damageItemInHand(e.getPlayer());
 					}
 					return true;
 				}
