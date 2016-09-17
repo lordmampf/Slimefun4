@@ -692,6 +692,9 @@ public abstract class ProgrammableAndroid extends SlimefunItem {
 	private void move(Block b, BlockFace face, Block block) throws Exception {
 		if (block.getY() < 0 || block.getY() > block.getWorld().getMaxHeight()) return;
 		
+		if(!CSCoreLib.getLib().getProtectionManager().canBuild(UUID.fromString(BlockStorage.getBlockInfo(b, "owner")), block))
+			return;
+				
 		if (block.getType() == Material.AIR) {
 			block.setType(Material.SKULL);
 			block.setData((byte) 1);
