@@ -14,45 +14,56 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class JetBootsTask implements Runnable {
-	
-	UUID uuid;
-	double speed;
-	int id;
-	
+
+	private UUID uuid;
+	private double speed;
+	private int id;
+
 	public JetBootsTask(Player p, double speed) {
 		this.uuid = p.getUniqueId();
 		this.speed = speed;
+		p.setAllowFlight(true);
 	}
-	
+
 	public void setID(int id) {
 		this.id = id;
 	}
 
 	@Override
 	public void run() {
-		if (Bukkit.getPlayer(uuid) == null) Bukkit.getScheduler().cancelTask(id);
-		else if (Bukkit.getPlayer(uuid).isDead()) Bukkit.getScheduler().cancelTask(id);
-		else if (!Bukkit.getPlayer(uuid).isSneaking()) Bukkit.getScheduler().cancelTask(id);
+		Player player = Bukkit.getPlayer(uuid);
+		if (player == null)
+			cancel(player);
+		else if (player.isDead())
+			cancel(player);
+		else if (!player.isSneaking())
+			cancel(player);
 		else {
-			Player p = Bukkit.getPlayer(uuid);
 			float cost = 0.075F;
-			float charge = ItemEnergy.getStoredEnergy(p.getInventory().getBoots());
+			float charge = ItemEnergy.getStoredEnergy(player.getInventory().getBoots());
 			double accuracy = Double.valueOf(new DecimalFormat("##.##").format(speed - 0.7).replace(",", "."));
 			if (charge >= cost) {
-				p.getInventory().setBoots(ItemEnergy.chargeItem(p.getInventory().getBoots(), -cost));
-				PlayerInventory.update(p);
-				
-				p.getWorld().playSound(p.getLocation(), Sound.ENTITY_TNT_PRIMED, (float) 0.25, 1);
-				p.getWorld().playEffect(p.getLocation(), Effect.SMOKE, 1, 1);
-				p.setFallDistance(0.0f);
+				player.getInventory().setBoots(ItemEnergy.chargeItem(player.getInventory().getBoots(), -cost));
+				PlayerInventory.update(player);
+
+				player.getWorld().playSound(player.getLocation(), Sound.ENTITY_TNT_PRIMED, (float) 0.25, 1);
+				player.getWorld().playEffect(player.getLocation(), Effect.SMOKE, 1, 1);
+				player.setFallDistance(0.0f);
 				double gravity = 0.04;
-				double offset = SlimefunStartup.chance(100, 50) ? accuracy: -accuracy;
-				Vector vector = new Vector(p.getEyeLocation().getDirection().getX() * speed + offset, gravity, p.getEyeLocation().getDirection().getZ() * speed  - offset);
-				
-				p.setVelocity(vector);
-			}
-			else Bukkit.getScheduler().cancelTask(id);
+				double offset = SlimefunStartup.chance(100, 50) ? accuracy : -accuracy;
+				Vector vector = new Vector(player.getEyeLocation().getDirection().getX() * speed + offset, gravity,
+						player.getEyeLocation().getDirection().getZ() * speed - offset);
+
+				player.setVelocity(vector);
+			} else
+				cancel(player);
 		}
+	}
+
+	private void cancel(Player pPlayer) {
+		if (pPlayer != null)
+			Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, () -> pPlayer.setAllowFlight(false), 20L * 30);
+		Bukkit.getScheduler().cancelTask(id);
 	}
 
 }
