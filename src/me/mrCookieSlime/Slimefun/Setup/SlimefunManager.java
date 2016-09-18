@@ -14,8 +14,10 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunArmorPiece;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
@@ -132,4 +134,16 @@ public class SlimefunManager {
 
 		return string1.equals(string2);
 	}
+
+	public static void damageItemInHand(Player pPlayer, int pDamage) {
+		if (pPlayer.getGameMode() != GameMode.CREATIVE) {
+			ItemStack item = pPlayer.getInventory().getItemInMainHand().clone();
+
+			item.setDurability((short) (item.getDurability() + pDamage));
+			
+			pPlayer.getInventory().setItemInMainHand(item.getDurability() < item.getType().getMaxDurability() ? item : null);
+		}
+	}
+
+
 }

@@ -7,12 +7,12 @@ import java.util.Map;
 
 import me.mrCookieSlime.CSCoreLibPlugin.CSCoreLib;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Block.Vein;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu.AdvancedMenuClickHandler;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu.MenuClickHandler;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.InvUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
+import me.mrCookieSlime.Slimefun.Vein;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -153,7 +153,7 @@ public class FluidPump extends SlimefunItem{
 					
 					List<Location> list = new ArrayList<Location>();
 		        	list.add(fluid.getLocation());
-		        	Vein.calculate(fluid.getLocation(), fluid.getLocation(), list, 64);
+		        	Vein.calculate(fluid.getLocation(), fluid.getLocation(), (m) -> m.equals(fluid.getType()), list, 64);
 		        	list.get(list.size() - 1).getBlock().setType(Material.AIR);
 					
 					return;
