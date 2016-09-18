@@ -2146,7 +2146,7 @@ public class SlimefunSetup {
 			@Override
 			public boolean onRightClick(ItemUseEvent e, Player p, ItemStack item) {
 				if (SlimefunManager.isItemSimiliar(item, SlimefunItems.PICKAXE_OF_THE_SEEKER, true)) {
-					Block closest = null;
+					Block closest = null;					
 					
 					for (int x = -4; x <= 4; x++) {
 						for (int y = -4; y <= 4; y++) {
