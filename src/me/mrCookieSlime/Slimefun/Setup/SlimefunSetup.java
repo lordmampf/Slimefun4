@@ -403,7 +403,7 @@ public class SlimefunSetup {
 		
 		new SlimefunMachine(Categories.MACHINES_1, SlimefunItems.COMPRESSOR, "COMPRESSOR",
 		new ItemStack[] {null, null, null, null, new ItemStack(Material.NETHER_FENCE), null, new ItemStack(Material.PISTON_BASE), new CustomItem(Material.DISPENSER, "Dispenser (Facing up)", 0), new ItemStack(Material.PISTON_BASE)},
-		new ItemStack[] {new ItemStack(Material.COAL, 8), SlimefunItems.CARBON, new CustomItem(SlimefunItems.STEEL_INGOT, 8), SlimefunItems.STEEL_PLATE, new CustomItem(SlimefunItems.CARBON, 4), SlimefunItems.COMPRESSED_CARBON, new CustomItem(SlimefunItems.STONE_CHUNK, 4), new ItemStack(Material.COBBLESTONE), new CustomItem(SlimefunItems.REINFORCED_ALLOY_INGOT, 8), SlimefunItems.REINFORCED_PLATE},
+		new ItemStack[] {new ItemStack(Material.COAL, 8), SlimefunItems.CARBON, new CustomItem(SlimefunItems.STEEL_INGOT, 8), SlimefunItems.STEEL_PLATE, new CustomItem(SlimefunItems.CARBON, 4), SlimefunItems.COMPRESSED_CARBON, new CustomItem(SlimefunItems.STONE_CHUNK, 4), new ItemStack(Material.COBBLESTONE), new CustomItem(SlimefunItems.REINFORCED_ALLOY_INGOT, 8), SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.COAL, 8, (byte) 1), new ItemStack(Material.COAL, 1) },
 		Material.NETHER_FENCE)
 		.register(true, new MultiBlockInteractionHandler() {
 			
@@ -417,7 +417,7 @@ public class SlimefunSetup {
 						Dispenser disp = (Dispenser) b.getRelative(BlockFace.DOWN).getState();
 						final Inventory inv = disp.getInventory();
 						for (ItemStack current: inv.getContents()) {
-							for (ItemStack convert: RecipeType.getRecipeInputs(machine)) {
+							for (ItemStack convert : RecipeType.getRecipeInputs(machine)) {
 								if (convert != null && SlimefunManager.isItemSimiliar(current, convert, true)) {
 									final ItemStack adding = RecipeType.getRecipeOutput(machine, convert);
 									if (InvUtils.fits(inv, adding)) {
