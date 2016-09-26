@@ -4423,11 +4423,13 @@ public class SlimefunSetup {
 			
 			@Override
 			public boolean onBreak(Player p, Block b, SlimefunItem item, UnregisterReason reason) {
-				if (BlockStorage.getBlockInfo(b, "owner").equals(p.getUniqueId().toString())) {
+				/* if (BlockStorage.getBlockInfo(b, "owner").equals(p.getUniqueId().toString())) {
 					Projector.getArmorStand(b).remove();
 					return true;
 				}
-				else return false;
+				else return false; */
+				Projector.getArmorStand(b).remove();
+				return true;
 			}
 		});
 		
