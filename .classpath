@@ -10,6 +10,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Dropbox/Dropbox/PSG/PSG-Peter/EklipseLibs/CS-CoreLib_v1.5.7.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CS-CoreLib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

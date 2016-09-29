@@ -13,8 +13,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class BlockMenu extends ChestMenu {
 	
-	BlockMenuPreset preset;
-	Location l;
+	private BlockMenuPreset preset;
+	private Location l;
 	
 	public int changes = 0;
 	
@@ -61,6 +61,8 @@ public class BlockMenu extends ChestMenu {
 		if (changes == 0) return;
 		// To force CS-CoreLib to build the Inventory
 		this.getContents();
+		
+		System.out.println(l.toString());
 		
 		File file = new File("data-storage/Slimefun/stored-inventories/" + serializeLocation(l) + ".sfi");
 		Config cfg = new Config(file);

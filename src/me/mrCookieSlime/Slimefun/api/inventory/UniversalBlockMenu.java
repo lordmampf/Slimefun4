@@ -12,8 +12,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class UniversalBlockMenu extends ChestMenu {
 	
-	BlockMenuPreset preset;
-	ItemManipulationEvent event;
+	private BlockMenuPreset preset;
+	private ItemManipulationEvent event;
 	
 	public int changes = 0;
 	
