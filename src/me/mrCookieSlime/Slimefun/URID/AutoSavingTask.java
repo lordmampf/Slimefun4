@@ -11,6 +11,7 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 public class AutoSavingTask implements Runnable {
 	
+	/*
 	@Override
 	public void run() {
 		Set<BlockStorage> worlds = new HashSet<BlockStorage>();
@@ -34,6 +35,15 @@ public class AutoSavingTask implements Runnable {
 			}
 		}
 		
+	} */
+	
+
+	@Override
+	public void run() {
+		System.out.println("[Slimefun] Auto-Saving Data... (Next Auto-Save: " + SlimefunStartup.getCfg().getInt("options.auto-save-delay-in-minutes") + "m)");
+		for (World world: Bukkit.getWorlds()) {
+			if (BlockStorage.isWorldRegistered(world.getName())) BlockStorage.getStorage(world).save(false);
+		}
 	}
 
 }
