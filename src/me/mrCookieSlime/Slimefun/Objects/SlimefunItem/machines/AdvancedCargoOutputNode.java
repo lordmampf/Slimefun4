@@ -195,7 +195,6 @@ public class AdvancedCargoOutputNode extends SlimefunItem {
 					menu.addPlayerInventoryClickHandler(new MenuClickHandler() {
 						@Override
 						public boolean onClick(Player p, int slot, ItemStack item, ClickAction action) {
-							System.out.println(slot);
 							menu.changes++;
 
 							return menu.isPlayerInventoryClickable();

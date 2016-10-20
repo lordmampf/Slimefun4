@@ -27,9 +27,11 @@ public class Projector {
 		double offset = Double.valueOf(BlockStorage.getBlockInfo(projector, "offset"));
 		Location l = new Location(projector.getWorld(), projector.getX() + 0.5, projector.getY() + offset, projector.getZ() + 0.5);
 		
+		nametag = nametag.replace("\\", "");
+		
 		for (Entity n: l.getChunk().getEntities()) {
 			if (n instanceof ArmorStand) {
-				if (n.getCustomName() != null && n.getCustomName().equals(nametag) && l.distanceSquared(n.getLocation()) < 0.4D) return (ArmorStand) n;
+				if (n.getCustomName() != null && n.getCustomName().replace("\\", "").equals(nametag) && l.distance(n.getLocation()) < 2) return (ArmorStand) n;
 			}
 		}
 		

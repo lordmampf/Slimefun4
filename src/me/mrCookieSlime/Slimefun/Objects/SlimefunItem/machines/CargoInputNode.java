@@ -199,6 +199,14 @@ public class CargoInputNode extends SlimefunItem {
 							return false;
 						}
 					});
+										
+					menu.addPlayerInventoryClickHandler(new MenuClickHandler() {
+						@Override
+						public boolean onClick(Player p, int slot, ItemStack item, ClickAction action) {
+							menu.changes++;
+							return menu.isPlayerInventoryClickable();
+						}
+					});
 					
 				} catch (Exception e) {
 					e.printStackTrace();

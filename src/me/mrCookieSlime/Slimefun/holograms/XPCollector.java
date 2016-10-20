@@ -14,7 +14,7 @@ public class XPCollector {
 		
 		for (Entity n: l.getChunk().getEntities()) {
 			if (n instanceof ArmorStand) {
-				if (n.getCustomName() == null && l.distanceSquared(n.getLocation()) < 0.4D) return (ArmorStand) n;
+				if (n.getCustomName() == null && l.distance(n.getLocation()) < 1) return (ArmorStand) n;
 			}
 		}
 		

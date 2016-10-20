@@ -2017,11 +2017,11 @@ public class SlimefunSetup {
 		.register(true);
 		
 		@SuppressWarnings("unchecked")
-		final String[] explosiveblacklist = Slimefun.getItemValue("EXPLOSIVE_PICKAXE", "unbreakable-blocks") != null ? ((List<String>) Slimefun.getItemValue("EXPLOSIVE_PICKAXE", "unbreakable-blocks")).toArray(new String[((List<String>) Slimefun.getItemValue("EXPLOSIVE_PICKAXE", "unbreakable-blocks")).size()]): new String[] {"BEDROCK"};
+		final String[] explosiveblacklist = Slimefun.getItemValue("EXPLOSIVE_PICKAXE", "unbreakable-blocks") != null ? ((List<String>) Slimefun.getItemValue("EXPLOSIVE_PICKAXE", "unbreakable-blocks")).toArray(new String[((List<String>) Slimefun.getItemValue("EXPLOSIVE_PICKAXE", "unbreakable-blocks")).size()]): new String[] {"BEDROCK", "OBSIDIAN"};
 		
 		new SlimefunItem(Categories.TOOLS, SlimefunItems.EXPLOSIVE_PICKAXE, "EXPLOSIVE_PICKAXE", RecipeType.MAGIC_WORKBENCH,
 		new ItemStack[] {new ItemStack(Material.TNT), SlimefunItems.SYNTHETIC_DIAMOND, new ItemStack(Material.TNT), null, SlimefunItems.FERROSILICON, null, null, SlimefunItems.FERROSILICON, null},
-		new String[] {"unbreakable-blocks"}, new Object[] {Arrays.asList("BEDROCK")})
+		new String[] {"unbreakable-blocks"}, new Object[] {Arrays.asList("BEDROCK", "OBSIDIAN")})
 		.register(true, new BlockBreakHandler() {
 			
 			@Override
@@ -4402,9 +4402,14 @@ public class SlimefunSetup {
 				if (item == null || !item.getName().equals("HOLOGRAM_PROJECTOR")) return false;
 				e.setCancelled(true);
 				
-				if (BlockStorage.getBlockInfo(e.getClickedBlock(), "owner").equals(p.getUniqueId().toString())) {
+				if(CSCoreLib.getLib().getProtectionManager().canBuild(p.getUniqueId(), e.getClickedBlock())) {
 					Projector.openEditor(p, e.getClickedBlock());
 				}
+				
+			/*	
+				if (BlockStorage.getBlockInfo(e.getClickedBlock(), "owner").equals(p.getUniqueId().toString())) {
+					Projector.openEditor(p, e.getClickedBlock());
+				} */
 				
 				return true;
 			}
