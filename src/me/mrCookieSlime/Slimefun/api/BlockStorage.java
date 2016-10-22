@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -19,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import javafx.util.Pair;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Math.DoubleHandler;
 import me.mrCookieSlime.Slimefun.SlimefunStartup;
@@ -36,14 +36,14 @@ public class BlockStorage {
 	public static Map<String, Set<Block>> ticking_chunks = new HashMap<String, Set<Block>>();
 	public static Set<String> loaded_tickers = new HashSet<String>();
 
-	private World world;
+	private static Map<Location, Map<String, String>> storage_blockinfo_cache = new HashMap<>();
 
-	private Map<Location, String> storage = new HashMap<Location, String>();
 	private static Map<String, String> map_chunks = new HashMap<String, String>();
-
-	private Map<Location, BlockMenu> inventories = new HashMap<Location, BlockMenu>();
 	public static Map<String, UniversalBlockMenu> universal_inventories = new HashMap<String, UniversalBlockMenu>();
 
+	private World world;
+	private Map<Location, String> storage = new HashMap<Location, String>();
+	private Map<Location, BlockMenu> inventories = new HashMap<Location, BlockMenu>();
 	private Map<String, Config> cache_blocks = new HashMap<String, Config>();
 
 	public static int info_delay;
@@ -270,10 +270,15 @@ public class BlockStorage {
 
 			for (String entry : entries) {
 				String[] components = entry.split("\":\"");
-				map.put(components[0], StringEscapeUtils.unescapeJson(components[1]));
+
+				components[1] = components[1].replace("\\\"", "\"");
+				components[1] = components[1].replace("\\\\", "\\");
+				components[1] = components[1].replace("\\/", "/");
+
+				map.put(components[0], components[1]);
 			}
 		}
-		
+
 		return map;
 	}
 
@@ -291,7 +296,22 @@ public class BlockStorage {
 	}
 
 	public static String getBlockInfo(Location l, String key) {
-		return parseJSON(getJSONData(l)).get(key);
+		Map<String, String> cached = storage_blockinfo_cache.get(l.toString());
+		if (cached != null && cached.containsKey(key))
+			return cached.get(key);
+
+		String binfo = parseJSON(getJSONData(l)).get(key);
+
+		if (cached != null) {
+			cached.put(key, binfo);
+			return binfo;
+		}
+
+		cached = new HashMap<>();
+		cached.put(key, binfo);
+
+		storage_blockinfo_cache.put(l, cached);
+		return binfo;
 	}
 
 	public static void addBlockInfo(Location l, String key, String value) {
@@ -307,6 +327,7 @@ public class BlockStorage {
 	}
 
 	public static void addBlockInfo(Location l, String key, String value, boolean updateTicker) {
+		storage_blockinfo_cache.remove(l);
 		Config cfg = new Config("data-storage/Slimefun/temp.yml");
 		if (hasBlockInfo(l))
 			cfg = getBlockInfo(l);
@@ -342,6 +363,7 @@ public class BlockStorage {
 	}
 
 	public static void setBlockInfo(Location l, String json, boolean updateTicker) {
+		storage_blockinfo_cache.remove(l);
 		BlockStorage storage = getStorage(l.getWorld());
 		storage.storage.put(l, json);
 		Map<String, String> parsed = parseJSON(json);
@@ -374,10 +396,12 @@ public class BlockStorage {
 	}
 
 	public static void clearBlockInfo(Location l, boolean destroy) {
+		storage_blockinfo_cache.remove(l);
 		SlimefunStartup.ticker.delete.put(l, destroy);
 	}
 
 	public static void _integrated_removeBlockInfo(Location l, boolean destroy) {
+		storage_blockinfo_cache.remove(l);
 		BlockStorage storage = getStorage(l.getWorld());
 		if (hasBlockInfo(l)) {
 			refreshCache(storage, l, getBlockInfo(l).getString("id"), null, destroy);
@@ -446,6 +470,9 @@ public class BlockStorage {
 	}
 
 	private static void refreshCache(BlockStorage storage, Location l, String key, String value, boolean updateTicker) {
+
+		storage_blockinfo_cache.remove(l);
+
 		Config cfg = storage.cache_blocks.containsKey(key) ? storage.cache_blocks.get(key) : new Config(path_blocks + l.getWorld().getName() + "/" + key + ".sfb");
 		cfg.setValue(serializeLocation(l), value);
 		storage.cache_blocks.put(key, cfg);
@@ -484,6 +511,10 @@ public class BlockStorage {
 	}
 
 	public static String checkID(Location l) {
+		Map<String, String> m = storage_blockinfo_cache.get(l);
+		if (m != null && m.containsKey("id"))
+			return m.get("id");
+
 		if (!hasBlockInfo(l))
 			return null;
 		return getBlockInfo(l, "id");
