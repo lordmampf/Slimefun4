@@ -19,6 +19,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 
 public class SlimefunManager {
@@ -91,35 +92,67 @@ public class SlimefunManager {
 				}
 			}
 
-			if (item.hasItemMeta() && SFitem.hasItemMeta()) {
+			if (hasMetadata(item) && hasMetadata(SFitem)) {
 				if (item.getItemMeta().hasDisplayName() && SFitem.getItemMeta().hasDisplayName()) {
 					if (item.getItemMeta().getDisplayName().equals(SFitem.getItemMeta().getDisplayName())) {
 						if (lore) {
-							if (item.getItemMeta().hasLore() && SFitem.getItemMeta().hasLore()) {
+							if (hasLore(item.getItemMeta()) && hasLore(SFitem.getItemMeta())) {
 								return equalsLore(item.getItemMeta().getLore(), SFitem.getItemMeta().getLore());
 							} else
-								return !item.getItemMeta().hasLore() && !SFitem.getItemMeta().hasLore();
+								return !hasLore(item.getItemMeta()) && !hasLore(SFitem.getItemMeta());
 						} else
 							return true;
 					} else
 						return false;
 				} else if (!item.getItemMeta().hasDisplayName() && !SFitem.getItemMeta().hasDisplayName()) {
 					if (lore) {
-						if (item.getItemMeta().hasLore() && SFitem.getItemMeta().hasLore()) {
+						if (hasLore(item.getItemMeta()) && hasLore(SFitem.getItemMeta())) {
 							return equalsLore(item.getItemMeta().getLore(), SFitem.getItemMeta().getLore());
 						} else
-							return !item.getItemMeta().hasLore() && !SFitem.getItemMeta().hasLore();
+							return !hasLore(item.getItemMeta()) && !hasLore(SFitem.getItemMeta());
 					} else
 						return true;
 				} else
 					return false;
 			} else
-				return !item.hasItemMeta() && !SFitem.hasItemMeta();
+				return !hasMetadata(item) && !hasMetadata(SFitem);
 		} else
 			return false;
 	}
 
 	private static final String MAGIC_GEAR_STATS_PREFIX = ChatColor.MAGIC.toString() + ChatColor.MAGIC + ChatColor.RESET + ChatColor.AQUA;
+	
+	private static boolean hasMetadata(ItemStack pItemStack) {
+		if(!pItemStack.hasItemMeta())
+			return false;
+				
+		ItemMeta im = pItemStack.getItemMeta();
+		
+		if(im.hasDisplayName())
+			return true;
+		
+		if(im.hasEnchants())
+			return true;
+		
+		if(im.getItemFlags() != null && im.getItemFlags().size() > 0)
+			return true;
+			
+		if(im.hasLore()) 
+			return hasLore(im);
+		
+		return true;		
+	}
+
+	private static boolean hasLore(ItemMeta pItemMeta) {
+		if (!pItemMeta.hasLore())
+			return false;
+
+		for (String string : pItemMeta.getLore()) {
+			if (!string.startsWith("§e§e§7") && !(string.startsWith(MAGIC_GEAR_STATS_PREFIX)))
+				return true;
+		}
+		return false;
+	}
 
 	private static boolean equalsLore(List<String> lore, List<String> lore2) {
 		String string1 = "", string2 = "";
@@ -140,10 +173,9 @@ public class SlimefunManager {
 			ItemStack item = pPlayer.getInventory().getItemInMainHand().clone();
 
 			item.setDurability((short) (item.getDurability() + pDamage));
-			
+
 			pPlayer.getInventory().setItemInMainHand(item.getDurability() < item.getType().getMaxDurability() ? item : null);
 		}
 	}
-
 
 }
