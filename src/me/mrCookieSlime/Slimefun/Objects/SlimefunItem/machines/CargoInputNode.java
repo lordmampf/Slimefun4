@@ -1,6 +1,7 @@
 package me.mrCookieSlime.Slimefun.Objects.SlimefunItem.machines;
 
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu.MenuClickHandler;
+import me.mrCookieSlime.CSCoreLibPlugin.CSCoreLib;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
@@ -214,8 +215,9 @@ public class CargoInputNode extends SlimefunItem {
 			}
 
 			@Override
-			public boolean canOpen(Block b, Player p) {
-				boolean open = BlockStorage.getBlockInfo(b, "owner").equals(p.getUniqueId().toString()) || p.hasPermission("slimefun.cargo.bypass");
+			public boolean canOpen(Block b, Player p) {				
+				boolean open = CSCoreLib.getLib().getProtectionManager().canBuild(p.getUniqueId(), b)  || p.hasPermission("slimefun.cargo.bypass");
+	//			boolean open = BlockStorage.getBlockInfo(b, "owner").equals(p.getUniqueId().toString()) || p.hasPermission("slimefun.cargo.bypass");
 				if (!open) {
 					Messages.local.sendTranslation(p, "inventory.no-access", true);
 				}

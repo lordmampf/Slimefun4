@@ -364,7 +364,7 @@ public class SlimefunSetup {
 		
 		new SlimefunMachine(Categories.MACHINES_1, SlimefunItems.ORE_CRUSHER, "ORE_CRUSHER",
 		new ItemStack[] {null, null, null, null, new ItemStack(Material.NETHER_FENCE), null, new ItemStack(Material.IRON_FENCE), new CustomItem(Material.DISPENSER, "Dispenser (Facing up)", 0), new ItemStack(Material.IRON_FENCE)},
-		new ItemStack[] {new ItemStack(Material.IRON_ORE), new CustomItem(SlimefunItems.IRON_DUST, (Boolean) Slimefun.getItemValue("ORE_CRUSHER", "double-ores") ? 2: 1), new ItemStack(Material.GOLD_ORE), new CustomItem(SlimefunItems.GOLD_DUST, (Boolean) Slimefun.getItemValue("ORE_CRUSHER", "double-ores") ? 2: 1), new ItemStack(Material.NETHERRACK, 16), SlimefunItems.SULFATE, SlimefunItems.SIFTED_ORE, SlimefunItems.CRUSHED_ORE, SlimefunItems.CRUSHED_ORE, SlimefunItems.PULVERIZED_ORE, SlimefunItems.PURE_ORE_CLUSTER, SlimefunItems.TINY_URANIUM, new ItemStack(Material.COBBLESTONE, 8), new ItemStack(Material.SAND, 1), new ItemStack(Material.GOLD_INGOT), SlimefunItems.GOLD_DUST, SlimefunItems.GOLD_4K, SlimefunItems.GOLD_DUST},
+		new ItemStack[] {new ItemStack(Material.IRON_ORE), new CustomItem(SlimefunItems.IRON_DUST, (Boolean) Slimefun.getItemValue("ORE_CRUSHER", "double-ores") ? 2: 1), new ItemStack(Material.GOLD_ORE), new CustomItem(SlimefunItems.GOLD_DUST, (Boolean) Slimefun.getItemValue("ORE_CRUSHER", "double-ores") ? 2: 1), new ItemStack(Material.NETHERRACK, 8), SlimefunItems.SULFATE, SlimefunItems.SIFTED_ORE, SlimefunItems.CRUSHED_ORE, SlimefunItems.CRUSHED_ORE, SlimefunItems.PULVERIZED_ORE, SlimefunItems.PURE_ORE_CLUSTER, SlimefunItems.TINY_URANIUM, new ItemStack(Material.COBBLESTONE, 8), new ItemStack(Material.SAND, 1), new ItemStack(Material.GOLD_INGOT), SlimefunItems.GOLD_DUST, SlimefunItems.GOLD_4K, SlimefunItems.GOLD_DUST},
 		Material.NETHER_FENCE)
 		.register(true, new MultiBlockInteractionHandler() {
 			
@@ -403,7 +403,7 @@ public class SlimefunSetup {
 		
 		new SlimefunMachine(Categories.MACHINES_1, SlimefunItems.COMPRESSOR, "COMPRESSOR",
 		new ItemStack[] {null, null, null, null, new ItemStack(Material.NETHER_FENCE), null, new ItemStack(Material.PISTON_BASE), new CustomItem(Material.DISPENSER, "Dispenser (Facing up)", 0), new ItemStack(Material.PISTON_BASE)},
-		new ItemStack[] {new ItemStack(Material.COAL, 8), SlimefunItems.CARBON, new CustomItem(SlimefunItems.STEEL_INGOT, 8), SlimefunItems.STEEL_PLATE, new CustomItem(SlimefunItems.CARBON, 4), SlimefunItems.COMPRESSED_CARBON, new CustomItem(SlimefunItems.STONE_CHUNK, 4), new ItemStack(Material.COBBLESTONE), new CustomItem(SlimefunItems.REINFORCED_ALLOY_INGOT, 8), SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.COAL, 8, (byte) 1), new ItemStack(Material.COAL, 1) },
+		new ItemStack[] {new ItemStack(Material.COAL, 8), SlimefunItems.CARBON, new CustomItem(SlimefunItems.STEEL_INGOT, 8), SlimefunItems.STEEL_PLATE, new CustomItem(SlimefunItems.CARBON, 4), SlimefunItems.COMPRESSED_CARBON, new CustomItem(SlimefunItems.STONE_CHUNK, 4), new ItemStack(Material.COBBLESTONE), new CustomItem(SlimefunItems.REINFORCED_ALLOY_INGOT, 8), SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.COAL, 16, (byte) 1),  SlimefunItems.CARBON },
 		Material.NETHER_FENCE)
 		.register(true, new MultiBlockInteractionHandler() {
 			
